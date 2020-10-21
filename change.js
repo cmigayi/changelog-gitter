@@ -4,7 +4,7 @@ const args = process.argv;
 
 console.log("comment: ",args[2]);
 var message = args[2];
-var commit = "git commit -m "+args[2];
+var commit = "git commit -m '"+args[2]+"'";
 gitChange();
 
 async function gitChange(){
