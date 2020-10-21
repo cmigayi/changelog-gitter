@@ -3,7 +3,8 @@ const {exec} = require('child_process');
 const args = process.argv;
 
 console.log("comment: ",args[2]);
-var commit = "git commit -m test";
+var message = args[2];
+var commit = "git commit -m "+message;
 gitChange();
 
 async function gitChange(){
