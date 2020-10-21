@@ -85,7 +85,7 @@ async function createAndWriteChangeLogJson(){
     changelogJsonTemplate[0].version = version;
     //changelog[0].date = date;
 
-    addChangedItem(type, changelogJsonTemplate[0]);
+    addChangedItem(type, comment, changelogJsonTemplate[0]);
 
     fs.writeFileSync(
       './changelog.json',
@@ -109,7 +109,7 @@ function addChangedItem(typeValue, item, changelog){
       changelog.type.added.push(dateTime+':'+item);
     break;
     case "changed":
-      //changelog.type.changed.push(dateTime+':'+item);
+      changelog.type.changed.push(dateTime+':'+item);
       console.log("items: "+typeValue+"--"+item);
     break;
     case "deprecated":
