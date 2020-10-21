@@ -109,7 +109,8 @@ function addChangedItem(typeValue, item, changelog){
       changelog.type.added.push(dateTime+':'+item);
     break;
     case "changed":
-      changelog.type.changed.push(dateTime+':'+item);
+      //changelog.type.changed.push(dateTime+':'+item);
+      console.log("items: "+typeValue+"--"+item);
     break;
     case "deprecated":
       changelog.type.deprecated.push(dateTime+':'+item);;
