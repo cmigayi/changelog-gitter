@@ -96,7 +96,7 @@ async function createAndWriteChangeLogJson(){
   }
 }
 
-function addChangedItem(type, item, changelog){
+function addChangedItem(typeValue, item, changelog){
   // Split
   // type = type.split('=');
   // items = type[1].slice(1,-1).split(',');
@@ -104,7 +104,7 @@ function addChangedItem(type, item, changelog){
   // DateTime
   let dateTime = formatDate(new Date());
 
-  switch(type){
+  switch(typeValue){
     case "added":
       changelog.type.added.push(dateTime+':'+item);
     break;
