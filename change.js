@@ -6,11 +6,12 @@ const args = process.argv;
 const version = pjson.version;
 var changeType = args[2];
 var type = args[3];
+var comment = args[4];
 
 // node change patch added ""
 
-console.log("comment: ",args[4]);
-var commit = "git commit -m '"+args[4]+"'";
+console.log("comment: ",comment);
+var commit = "git commit -m '"+comment+"'";
 gitChange(commit);
 createAndWriteChangeLogJson();
 
@@ -70,7 +71,7 @@ async function createAndWriteChangeLogJson(){
     changelogJsonTemplate[0].version = updateVersion(changeType, jsonfile);
     //  changelog[0].date = date;
 
-    addChangedItem(type, changelogJsonTemplate[0]);
+    addChangedItem(type, comment, changelogJsonTemplate[0]);
     jsonfile[jsonfile.length] = changelogJsonTemplate[0];
 
     fs.writeFileSync(
@@ -95,7 +96,7 @@ async function createAndWriteChangeLogJson(){
   }
 }
 
-function addChangedItem(type, changelog){
+function addChangedItem(type, item, changelog){
   // Split
   // type = type.split('=');
   // items = type[1].slice(1,-1).split(',');
@@ -105,34 +106,22 @@ function addChangedItem(type, changelog){
 
   switch(type){
     case "added":
-      items.forEach(function(item){
-        changelog.type.added.push(dateTime+':'+item);
-      });
+      changelog.type.added.push(dateTime+':'+item);
     break;
     case "changed":
-      items.forEach(function(item){
-        changelog.type.changed.push(dateTime+':'+item);
-      });
+      changelog.type.changed.push(dateTime+':'+item);
     break;
     case "deprecated":
-      items.forEach(function(item){
-        changelog.type.deprecated.push(dateTime+':'+item);
-      });
+      changelog.type.deprecated.push(dateTime+':'+item);;
     break;
     case "removed":
-      items.forEach(function(item){
-        changelog.type.removed.push(dateTime+':'+item);
-      });
+      changelog.type.removed.push(dateTime+':'+item);
     break;
     case "fixed":
-      items.forEach(function(item){
-        changelog.type.fixed.push(dateTime+':'+item);
-      });
+      changelog.type.fixed.push(dateTime+':'+item);
     break;
     case "security":
-      items.forEach(function(item){
-        changelog.type.security.push(dateTime+':'+item);
-      });
+      changelog.type.security.push(dateTime+':'+item);
     break;
   }
 }
