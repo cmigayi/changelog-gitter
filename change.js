@@ -65,7 +65,7 @@ async function createAndWriteChangeLogJson(){
   // Check if changelog.json exists
   if(fs.existsSync('./changelog.json')){
     const jsonfile = require('./changelog.json');
-    
+
     // Add data to array and json
     changelogJsonTemplate[0].version = updateVersion(changeType, jsonfile);
     //  changelog[0].date = date;
@@ -97,13 +97,13 @@ async function createAndWriteChangeLogJson(){
 
 function addChangedItem(type, changelog){
   // Split
-  type = type.split('=');
-  items = type[1].slice(1,-1).split(',');
+  // type = type.split('=');
+  // items = type[1].slice(1,-1).split(',');
 
   // DateTime
   let dateTime = formatDate(new Date());
 
-  switch(type[0]){
+  switch(type){
     case "added":
       items.forEach(function(item){
         changelog.type.added.push(dateTime+':'+item);
