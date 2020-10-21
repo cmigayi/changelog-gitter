@@ -61,10 +61,11 @@ async function createAndWriteChangeLogJson(){
       "security": []
     }
   }];
-  const jsonfile = require('./changelog.json');
 
   // Check if changelog.json exists
   if(fs.existsSync('./changelog.json')){
+    const jsonfile = require('./changelog.json');
+    
     // Add data to array and json
     changelogJsonTemplate[0].version = updateVersion(changeType, jsonfile);
     //  changelog[0].date = date;
