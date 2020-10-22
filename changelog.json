@@ -1,0 +1,16 @@
+[
+  {
+    "version": "1.0.0",
+    "date": "",
+    "type": {
+      "added": [],
+      "changed": [
+        "2020-10-21:edited the code so that the change.json can be found"
+      ],
+      "deprecated": [],
+      "removed": [],
+      "fixed": [],
+      "security": []
+    }
+  }
+]
