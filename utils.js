@@ -2,8 +2,12 @@ const {exec} = require('child_process');
 const fs = require('fs');
 const ver = require('./utils/log_version');
 const date = require('./utils/log_date');
+const path = require('path');
+const pjson = require('../../package.json');
 
 var template = require('./template.json');
+var project = pjson.name;
+var changelogJson = path.resolve('../'+project+'/node_modules/changelog-gitter/changelog.json');
 
 findTotalExistingVersions = (template) => {
   return template[0].version.length;
@@ -27,9 +31,9 @@ createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike) => {
   let today = date.formatDate(new Date());
 
   // Check if changelog.json exists
-  if(fs.existsSync('./changelog.json')){
+  if(fs.existsSync(changelogJson)){
     try{
-      var jsonfile = await require('./changelog.json');
+      var jsonfile = await require(changelogJson);
       if(alike){
         /**
         * Stay at current version
@@ -66,7 +70,7 @@ createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike) => {
       }
 
       fs.writeFileSync(
-        './changelog.json',
+        changelogJson,
         JSON.stringify(jsonfile)
       );
       console.log("write successful", jsonfile);
@@ -95,7 +99,7 @@ createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike) => {
 
       // Create changelog.json
       fs.writeFileSync(
-        './changelog.json',
+        changelogJson,
         JSON.stringify(jsonfile),
         { flag: 'wx' }
       );

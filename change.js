@@ -1,13 +1,8 @@
-const pjson = require('./package.json');
 const utils = require('./utils');
 const fs = require('fs');
-
 const git = require('./utils/log_git');
 
 const args = process.argv;
-
-// This version value has not been used, pending future changes
-const version = pjson.version;
 
 /**
 * Query pattern: Type on your command line as shown below
@@ -34,14 +29,13 @@ if(!git.isGitInit()){
         }
       break;
       default:
+        var versiontype = args[2].toLowerCase();        
         if(args.length === 6 && args[3].toLowerCase() === "alike"){
           // When alike is called
-          var versiontype = args[2].toLowerCase();
           var alike = true;
           var changetype = args[4].toLowerCase();
           var comment = args[5];
         }else{
-          var versiontype = args[2].toLowerCase();
           var alike = false;
           var changetype = args[3].toLowerCase();
           var comment = args[4];
