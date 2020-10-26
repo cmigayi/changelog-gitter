@@ -23,7 +23,7 @@ gitChange = async(commit) => {
   }
 }
 
-createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike) => {
+createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike, changelogJson) => {
   let today = date.formatDate(new Date());
 
   // Check if changelog.json exists

@@ -44,7 +44,7 @@ if(!git.isGitInit()){
           var changetype = args[3].toLowerCase();
           var comment = args[4];
         }
-        utils.createAndWriteChangeLogJson(versiontype, changetype, comment, alike);
+        utils.createAndWriteChangeLogJson(versiontype, changetype, comment, alike, changelogJson);
         utils.gitChange("git commit -m "+comment);
       break;
     }
