@@ -2,12 +2,8 @@ const {exec} = require('child_process');
 const fs = require('fs');
 const ver = require('./utils/log_version');
 const date = require('./utils/log_date');
-const path = require('path');
-const pjson = require('../../package.json');
 
 var template = require('./template.json');
-var project = pjson.name;
-var changelogJson = path.resolve('../'+project+'/node_modules/changelog-gitter/changelog.json');
 
 findTotalExistingVersions = (template) => {
   return template[0].version.length;
