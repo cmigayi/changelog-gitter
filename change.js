@@ -1,5 +1,8 @@
 const pjson = require('./package.json');
 const utils = require('./utils');
+const fs = require('fs');
+
+const git = require('./utils/log_git');
 
 const args = process.argv;
 
@@ -12,25 +15,40 @@ const version = pjson.version;
 * ======================> node change patch added "COMMENT" <===================
 **/
 
-/* User inputs: Following the format in the above comment section */
-switch(args[2]){
-  case "log":
-    utils.generateChangelogFile('./changelog.json');
-  break;
-  default:
-    if(args.length === 6 && args[3].toLowerCase() === "alike"){
-      // When alike is called
-      var versiontype = args[2].toLowerCase();
-      var alike = true;
-      var changetype = args[4].toLowerCase();
-      var comment = args[5];
-    }else{
-      var versiontype = args[2].toLowerCase();
-      var alike = false;
-      var changetype = args[3].toLowerCase();
-      var comment = args[4];
+/**
+* Check if git has been initialized
+*/
+if(!git.isGitInit()){
+  console.log("Attention: Initialized Git before you proceed!");
+}else{
+  /* User inputs: Following the format in the above comment section */
+  if(!args[2]){
+    console.log("Attention: You need to provide the arguments");
+  }else{
+    switch(args[2]){
+      case "log":
+        if(fs.existsSync('./changelog.json')){
+          utils.generateChangelogFile('./changelog.json');
+        }else{
+          console.log("Attention: Post at least one change before you log");
+        }
+      break;
+      default:
+        if(args.length === 6 && args[3].toLowerCase() === "alike"){
+          // When alike is called
+          var versiontype = args[2].toLowerCase();
+          var alike = true;
+          var changetype = args[4].toLowerCase();
+          var comment = args[5];
+        }else{
+          var versiontype = args[2].toLowerCase();
+          var alike = false;
+          var changetype = args[3].toLowerCase();
+          var comment = args[4];
+        }
+        utils.createAndWriteChangeLogJson(versiontype, changetype, comment, alike);
+        utils.gitChange("git commit -m "+comment);
+      break;
     }
-    utils.createAndWriteChangeLogJson(versiontype, changetype, comment, alike);
-    utils.gitChange("git commit -m "+comment);
-  break;
+  }
 }

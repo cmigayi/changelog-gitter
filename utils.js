@@ -201,8 +201,8 @@ changelogTemplate = ((jsonfile) => {
   return template;
 });
 
-generateChangelogFile = ((jsonfile) => {
-  let logtemplate = changelogTemplate(jsonfile);
+generateChangelogFile = async(jsonfile) => {
+  let logtemplate = await changelogTemplate(jsonfile);
   if(fs.existsSync('./CHANGELOG.md')){
     fs.writeFileSync('./CHANGELOG.md', logtemplate);
     console.log("update successful");
@@ -210,7 +210,7 @@ generateChangelogFile = ((jsonfile) => {
     fs.writeFileSync('./CHANGELOG.md', logtemplate, { flag: 'wx' });
     console.log("CHANGELOG.md created successful");
   }
-});
+}
 
 module.exports = {
   findTotalExistingVersions,
