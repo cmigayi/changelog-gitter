@@ -1,9 +1,11 @@
 const {exec} = require('child_process');
 const fs = require('fs');
+const ver = require('./utils/log_version');
+const date = require('./utils/log_date');
 
 var template = require('./template.json');
 
-findTotalExistingVersions = () => {
+findTotalExistingVersions = (template) => {
   return template[0].version.length;
 }
 
@@ -21,125 +23,200 @@ gitChange = async(commit) => {
   }
 }
 
-updateVersion = (changeType, jsonfile) => {
-  version = jsonfile[jsonfile.length-1].version;
-  versions = version.split('.');
-  switch(changeType){
-    case "patch":
-      patch = Number(versions[2])+1;
-      version = versions[0]+'.'+versions[1]+'.'+patch;
-    break;
-    case "minor":
-      minor = Number(versions[1])+1;
-      version = versions[0]+'.'+minor+'.'+versions[2];
-    break;
-    case "major":
-      major = Number(versions[0])+1;
-      version = major+'.'+versions[1]+'.'+versions[2];
-    break;
-  }
-  return version;
-}
-
-createAndWriteChangeLogJson = async(changeType, type, comment) => {
-  var changelogJsonTemplate = [{
-    "version": "",
-    "date": "",
-    "type": { // added, changed, deprecated, removed, fixed, security
-      "added": [],
-      "changed": [],
-      "deprecated": [],
-      "removed": [],
-      "fixed": [],
-      "security": []
-    }
-  }];
+createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike) => {
+  let today = date.formatDate(new Date());
 
   // Check if changelog.json exists
   if(fs.existsSync('./changelog.json')){
-    const jsonfile = require('./changelog.json');
+    try{
+      var jsonfile = await require('./changelog.json');
+      if(alike){
+        /**
+        * Stay at current version
+        * Change is made to the current version
+        */
+        let versionArray = jsonfile[0].version;
+        let version = versionArray[versionArray.length-1];
+        versionValue = Object.keys(version)[0];
+        console.log("current version", version);
+      }else{
+        /**
+        * Update version
+        * Change will be made to the next version
+        */
+        versionValue = await ver.updateVersion(versiontype, jsonfile);
+        console.log("updated version", versionValue);
+      }
 
-    // Add data to array and json
-    changelogJsonTemplate[0].version = updateVersion(changeType, jsonfile);
-    //  changelog[0].date = date;
+      // If version doesn't exist, add it
+      if(! await ver.doesVersionExists(versionValue, jsonfile)){
+        jsonfile = await ver.addVersion(versionValue, jsonfile);
+      }
 
-    addChangedItem(type, comment, changelogJsonTemplate[0]);
-    jsonfile[jsonfile.length] = changelogJsonTemplate[0];
+      // If date doestn't exist, add it
+      if(! await date.doesDateExist(today, versionValue, jsonfile)){
+        jsonfile = await date.addDate(today, versionValue, jsonfile);
+      }else{
+        console.log("date not added");
+      }
 
-    fs.writeFileSync(
-      './changelog.json',
-      JSON.stringify(jsonfile)
-    );
-    console.log("write successful", jsonfile);
+      // The add change made
+      if(comment){
+        jsonfile = await addChangedItem(today, typeValue, comment, versionValue, jsonfile);
+      }
+
+      fs.writeFileSync(
+        './changelog.json',
+        JSON.stringify(jsonfile)
+      );
+      console.log("write successful", jsonfile);
+    }catch(error){
+      console.log("Error: ", error);
+    }
   }else{
-    // Create changelog.json
-    // Add data to array and json
-    changelogJsonTemplate[0].version = version;
-    //changelog[0].date = date;
+    try{
+      versionValue = "1.0.0";
+      console.log("updated version", versionValue);
 
-    addChangedItem(type, comment, changelogJsonTemplate[0]);
+      // If version doesn't exist, add it
+      if(!ver.doesVersionExists(versionValue, template)){
+        jsonfile = await ver.addVersion(versionValue, template);
+      }
 
-    fs.writeFileSync(
-      './changelog.json',
-      JSON.stringify(changelogJsonTemplate),
-      { flag: 'wx' }
-    );
-    console.log("write successful");
+      // If date doestn't exist, add it
+      if(!date.doesDateExist(today, versionValue, template)){
+        jsonfile = await date.addDate(today, versionValue, template);
+      }
+
+      // The add change made
+      if(comment){
+        jsonfile = await addChangedItem(today, typeValue, comment, versionValue, template);
+      }
+
+      // Create changelog.json
+      fs.writeFileSync(
+        './changelog.json',
+        JSON.stringify(jsonfile),
+        { flag: 'wx' }
+      );
+      console.log("write successful");
+    }catch(error){
+      console.log("Error: ", error);
+    }
   }
 }
 
-addChangedItem = (typeValue, item, changelog) => {
-  // Split
-  // type = type.split('=');
-  // items = type[1].slice(1,-1).split(',');
-
-  // DateTime
-  let dateTime = formatDate(new Date());
-
-  switch(typeValue){
-    case "added":
-      changelog.type.added.push(dateTime+':'+item);
-    break;
-    case "changed":
-      changelog.type.changed.push(dateTime+':'+item);
-    break;
-    case "deprecated":
-      changelog.type.deprecated.push(dateTime+':'+item);;
-    break;
-    case "removed":
-      changelog.type.removed.push(dateTime+':'+item);
-    break;
-    case "fixed":
-      changelog.type.fixed.push(dateTime+':'+item);
-    break;
-    case "security":
-      changelog.type.security.push(dateTime+':'+item);
-    break;
-  }
+addChangedItem = (date, typeValue, comment, versionValue, jsonfile) => {
+  //console.log("jsonfile", jsonfile[0].version);
+  jsonfile[0].version.forEach((version) => {
+    //console.log("version", version);
+    Object.keys(version).forEach((versionkey) => {
+      //console.log("version key", versionkey);
+      if(versionkey === versionValue){
+        //console.log("version value", version[versionkey]);
+        version[versionkey].forEach((item) => {
+          //console.log("version value item", item);
+          Object.keys(item).forEach((itemkey) => {
+            //console.log("version value item key", itemkey);
+            if(itemkey === date && typeValue){
+              console.log("version value item key value", item[itemkey][typeValue]);
+              item[itemkey][typeValue].push(comment);
+              console.log("Comment added", item[itemkey]);
+            }
+          });
+        });
+      }
+    });
+  });
+  return jsonfile;
 }
 
-formatDate = (date_ob) => {
-  // adjust 0 before single digit date
-  let date = date_ob.getDate();
-  if(date.length == 1){
-    date = "0" + date;
+changelogTemplate = ((jsonfile) => {
+  jsonfile = require(jsonfile);
+
+  let template = "\# Changelog \r\n"+
+  "All notable changes to this project will be documented in this file.\r\n"+
+  "The format is based on Keep a Changelog and this project adheres to Semantic Versioning."+
+  "\r\n\r\n";
+
+  let versionArray = jsonfile[0].version;
+  //console.log("data",jsonfile);
+  versionArray.forEach((version)=>{
+    Object.keys(version).forEach((versionkey) => {
+      template+="## \["+versionkey+"\]";
+
+      version[versionkey].forEach((item) => {
+       //console.log("item",item);
+        Object.keys(item).forEach((itemkey) => {
+          // Display date
+          template+=" \-"+itemkey+" \r\n";
+          if(item[itemkey].added.length > 0){
+            template+= "### Added \r\n";
+            item[itemkey].added.forEach((content) => {
+              template+= "* "+content+"\r\n";
+            });
+          }
+
+          if(item[itemkey].changed.length > 0){
+            template+= "### Changed \r\n";
+            item[itemkey].changed.forEach((content) => {
+              template+= "* "+content+"\r\n";
+            });
+          }
+
+          if(item[itemkey].deprecated.length > 0){
+            template+= "### deprecated \r\n";
+            item[itemkey].deprecated.forEach((content) => {
+              template+= "* "+content+"\r\n";
+            });
+          }
+
+          if(item[itemkey].removed.length > 0){
+            template+= "### Removed \r\n";
+            item[itemkey].removed.forEach((content) => {
+              template+= "* "+content+"\r\n";
+            });
+          }
+
+          if(item[itemkey].fixed.length > 0){
+            template+= "### Fixed \r\n";
+            item[itemkey].fixed.forEach((content) => {
+              template+= "* "+content+"\r\n";
+            });
+          }
+
+          if(item[itemkey].security.length > 0){
+            template+= "### Security \r\n";
+            item[itemkey].security.forEach((content) => {
+              template+= "* "+content+"\r\n";
+            });
+          }
+        });
+      });
+    });
+
+    template += "\r\n\r\n";
+  });
+
+  return template;
+});
+
+generateChangelogFile = ((jsonfile) => {
+  let logtemplate = changelogTemplate(jsonfile);
+  if(fs.existsSync('./CHANGELOG.md')){
+    fs.writeFileSync('./CHANGELOG.md', logtemplate);
+    console.log("update successful");
+  }else{
+    fs.writeFileSync('./CHANGELOG.md', logtemplate, { flag: 'wx' });
+    console.log("CHANGELOG.md created successful");
   }
-
-  // current month
-  let month = date_ob.getMonth() + 1;
-  if(month.length == 1){
-    month = "0" + month;
-  }
-
-  // current year
-  let year = date_ob.getFullYear();
-
-  return year + "-" + month + "-" + date;
-}
+});
 
 module.exports = {
   findTotalExistingVersions,
   gitChange,
-  updateVersion,
-  createAndWriteChangeLogJson
+  createAndWriteChangeLogJson,
+  addChangedItem,
+  changelogTemplate,
+  generateChangelogFile
 }

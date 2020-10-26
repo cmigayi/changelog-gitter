@@ -1,16 +1,1 @@
-[
-  {
-    "version": "1.0.0",
-    "date": "",
-    "type": {
-      "added": [],
-      "changed": [
-        "2020-10-21:edited the code so that the change.json can be found"
-      ],
-      "deprecated": [],
-      "removed": [],
-      "fixed": [],
-      "security": []
-    }
-  }
-]
+[{"version":[{"1.0.0":[{"26-10-2020":{"added":[],"changed":["testing this change"],"deprecated":[],"removed":[],"fixed":[],"security":[]}}]},{"1.0.1":[{"26-10-2020":{"added":[],"changed":["testing this change","testing this change"],"deprecated":[],"removed":[],"fixed":[],"security":[]}}]},{"1.1.0":[{"26-10-2020":{"added":[],"changed":["testing this change"],"deprecated":[],"removed":[],"fixed":[],"security":[]}}]},{"2.0.0":[{"26-10-2020":{"added":[],"changed":["testing this change"],"deprecated":[],"removed":[],"fixed":[],"security":[]}}]},{"2.1.0":[{"26-10-2020":{"added":["testing this change","testing this change"],"changed":["testing this change","testing this change"],"deprecated":[],"removed":[],"fixed":[],"security":[]}}]}]}]
