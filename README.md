@@ -29,6 +29,7 @@ Automated changelog generator for all projects including git add and commit
     > sudo node change log
   
   * node change [VERSION_TYPE] [CHANGE_TYPE] ["COMMENT"]
+    This is the format you use to post changes to the changelog file.
   
     i. [VERSION_TYPE]
     
