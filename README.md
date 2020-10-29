@@ -76,4 +76,13 @@ Automated changelog generator for all projects including git add and commit. __C
     iii. ["COMMENT"]
     
       This is the documentation comment. It should always be in double-qoutes. 
+      
+   ## "alike" argument
+  
+   This argument is used when you want to post changes to the same version.
+    
+   Syntax:
+    
+   > sudo node change patch __alike__ added "new change has been made" 
+      
    
