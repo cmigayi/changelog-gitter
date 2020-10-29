@@ -75,5 +75,5 @@ Automated changelog generator for all projects including git add and commit
     
     iii. ["COMMENT"]
     
-      This are documentation comments. They should always be in double-qoutes. 
+      This is the documentation comment. It should always be in double-qoutes. 
    
