@@ -1,5 +1,5 @@
 # changelog-gitter
-Automated changelog generator for all projects including git add and commit
+Automated changelog generator for all projects including git add and commit. __Currently only working with Node projects__.
 
 ## Good to know
   __changelog-gitter__ takes care of your "git add ." and "git commit". You can confirm this by checking your git logs. 
