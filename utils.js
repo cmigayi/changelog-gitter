@@ -9,11 +9,11 @@ findTotalExistingVersions = (template) => {
   return template[0].version.length;
 }
 
-gitChange = async(commit) => {
-  if(commit){
+gitChange = async(comment) => {
+  if(comment){
     try{
       await exec("git add .");
-      let result = await exec(commit);
+      await exec("git commit -m "+comment);
       console.log("Git change successful");
     }catch(error){
       console.log("Error:", error);

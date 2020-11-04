@@ -2,10 +2,24 @@ const utils = require('./utils');
 const fs = require('fs');
 const git = require('./utils/log_git');
 const path = require('path');
+
+/**
+* The package we are accessing here is not for changelog-gitter but for
+* the project using changelog-gitter
+*/
 const pjson = require('../../package.json');
 
 const args = process.argv;
+
+/**
+* The project name we are accessing here is not for changelog-gitter but for
+* the project using changelog-gitter
+*/
 var project = pjson.name;
+
+/**
+* Accessing change-gitter from the host project.
+*/
 var changelogJson = path.resolve('../'+project+'/node_modules/changelog-gitter/changelog.json');
 
 /**
@@ -28,6 +42,7 @@ if(!git.isGitInit()){
       case "log":
         if(fs.existsSync(changelogJson)){
           utils.generateChangelogFile(changelogJson);
+          utils.gitChange("CHANGELOG.md file updated");
         }else{
           console.log("Attention: Post at least one change before you log");
         }
@@ -45,7 +60,7 @@ if(!git.isGitInit()){
           var comment = args[4];
         }
         utils.createAndWriteChangeLogJson(versiontype, changetype, comment, alike, changelogJson);
-        utils.gitChange("git commit -m "+comment);
+        utils.gitChange(comment);
       break;
     }
   }
