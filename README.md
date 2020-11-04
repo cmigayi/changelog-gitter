@@ -1,5 +1,5 @@
 # changelog-gitter
-Automated changelog generator for all projects including git add and commit
+Automated changelog generator for all projects including git add and commit. __Currently only working with Node projects__.
 
 ## Good to know
   __changelog-gitter__ takes care of your "git add ." and "git commit". You can confirm this by checking your git logs. 
@@ -29,6 +29,8 @@ Automated changelog generator for all projects including git add and commit
     > sudo node change log
   
   * node change [VERSION_TYPE] [CHANGE_TYPE] ["COMMENT"]
+  
+    This is the format you use to post changes to the changelog file.
   
     i. [VERSION_TYPE]
     
@@ -73,5 +75,14 @@ Automated changelog generator for all projects including git add and commit
     
     iii. ["COMMENT"]
     
-      This are documentation comments. They should always be in double-qoutes. 
+      This is the documentation comment. It should always be in double-qoutes. 
+      
+   ## "alike" argument
+  
+   This argument is used when you want to post changes to the same version.
+    
+   Syntax:
+    
+   > sudo node change patch __alike__ added "new change has been made" 
+      
    
