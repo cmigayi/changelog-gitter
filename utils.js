@@ -23,7 +23,7 @@ gitChange = async(comment) => {
   }
 }
 
-createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike, changelogJson) => {
+createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike, changelogJson, bak_changelogJson) => {
   let today = date.formatDate(new Date());
 
   // Check if changelog.json exists
@@ -38,7 +38,7 @@ createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike, chan
         let versionArray = jsonfile[0].version;
         let version = versionArray[versionArray.length-1];
         versionValue = Object.keys(version)[0];
-        console.log("current version", version);
+        console.log("current version", versionValue);
       }else{
         /**
         * Update version
@@ -56,8 +56,6 @@ createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike, chan
       // If date doestn't exist, add it
       if(! await date.doesDateExist(today, versionValue, jsonfile)){
         jsonfile = await date.addDate(today, versionValue, jsonfile);
-      }else{
-        console.log("date not added");
       }
 
       // The add change made
@@ -69,14 +67,17 @@ createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike, chan
         changelogJson,
         JSON.stringify(jsonfile)
       );
-      console.log("write successful", jsonfile);
+      // Copy content from changelog to .bak_changelog.json
+      fs.copyFileSync(changelogJson, bak_changelogJson);
+      gitChange(comment);
+      console.log("write successful");
     }catch(error){
-      console.log("Error: ", error);
+      console.log("Attention: Use 'sudo' to run the command again");
     }
   }else{
     try{
       versionValue = "1.0.0";
-      console.log("updated version", versionValue);
+      //console.log("updated version", versionValue);
 
       // If version doesn't exist, add it
       if(!ver.doesVersionExists(versionValue, template)){
@@ -99,9 +100,16 @@ createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike, chan
         JSON.stringify(jsonfile),
         { flag: 'wx' }
       );
+
+      // Create .bak_changelog.json
+      fs.writeFileSync(bak_changelogJson, "", { flag: 'wx' });
+
+      // Copy content from changelog to .bak_changelog.json
+      fs.copyFileSync(changelogJson, bak_changelogJson);
+      gitChange(comment);
       console.log("write successful");
     }catch(error){
-      console.log("Error: ", error);
+      console.log("Attention: Use 'sudo' to run the command again");
     }
   }
 }
@@ -119,9 +127,9 @@ addChangedItem = (date, typeValue, comment, versionValue, jsonfile) => {
           Object.keys(item).forEach((itemkey) => {
             //console.log("version value item key", itemkey);
             if(itemkey === date && typeValue){
-              console.log("version value item key value", item[itemkey][typeValue]);
+              //console.log("version value item key value", item[itemkey][typeValue]);
               item[itemkey][typeValue].push(comment);
-              console.log("Comment added", item[itemkey]);
+              //console.log("Comment added", item[itemkey]);
             }
           });
         });
@@ -210,6 +218,19 @@ generateChangelogFile = async(jsonfile) => {
     fs.writeFileSync('./CHANGELOG.md', logtemplate, { flag: 'wx' });
     console.log("CHANGELOG.md created successful");
   }
+  gitChange("CHANGELOG.md file updated");
+}
+
+createChangeLogJsonFromBackupFile = async(changelogJson, bak_changelogJson) => {
+  try{
+    // Create changelog.json
+    fs.writeFileSync(changelogJson, "", { flag: 'wx' });
+
+    // Copy content from .bak_changelog.json to the created changelog
+    fs.copyFileSync(bak_changelogJson, changelogJson);
+  }catch(error){
+    console.log("Attention: Use 'sudo' to run the command again");
+  }
 }
 
 module.exports = {
@@ -218,5 +239,6 @@ module.exports = {
   createAndWriteChangeLogJson,
   addChangedItem,
   changelogTemplate,
-  generateChangelogFile
+  generateChangelogFile,
+  createChangeLogJsonFromBackupFile
 }

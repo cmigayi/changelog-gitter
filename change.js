@@ -23,6 +23,11 @@ var project = pjson.name;
 var changelogJson = path.resolve('../'+project+'/node_modules/changelog-gitter/changelog.json');
 
 /**
+* Accessing bak_changelog.json file from root
+*/
+var bak_changelogJson = path.resolve('./.bak_changelog.json');
+
+/**
 * Query pattern: Type on your command line as shown below
 *
 * ======================> node change patch added "COMMENT" <===================
@@ -40,9 +45,17 @@ if(!git.isGitInit()){
   }else{
     switch(args[2]){
       case "log":
+        // Check if changelog.json file exists in the node_modules/changelog-gitter dir
         if(fs.existsSync(changelogJson)){
           utils.generateChangelogFile(changelogJson);
-          utils.gitChange("CHANGELOG.md file updated");
+        }
+        // Check if .bak_changelog.json exists in project root
+        else if(fs.existsSync(bak_changelogJson)){
+          /**
+          * Create changelog.json file in node_modules/changelog-gitter dir,
+          * Copy content from .bak_changelog.json to the created changelog
+          */
+          utils.createChangeLogJsonFromBackupFile(changelogJson, bak_changelogJson);
         }else{
           console.log("Attention: Post at least one change before you log");
         }
@@ -59,8 +72,8 @@ if(!git.isGitInit()){
           var changetype = args[3].toLowerCase();
           var comment = args[4];
         }
-        utils.createAndWriteChangeLogJson(versiontype, changetype, comment, alike, changelogJson);
-        utils.gitChange(comment);
+        utils.createAndWriteChangeLogJson(versiontype, changetype, comment, alike, changelogJson, bak_changelogJson);
+
       break;
     }
   }
