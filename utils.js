@@ -221,6 +221,25 @@ generateChangelogFile = async(jsonfile) => {
   gitChange("CHANGELOG.md file updated");
 }
 
+generatePackageJsonFile = async() => {
+  let packagetemplate = {
+    "name": "",
+    "version": "",
+    "description": "",
+    "main": "change.js",
+    "scripts": {},
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {}
+  };
+  if(!fs.existsSync('./package.json')){
+    fs.writeFileSync('./package.json', packagetemplate, { flag: 'wx' });
+    console.log("package.json created successful");
+    gitChange("package.json file created");
+  }
+}
+
 createChangeLogJsonFromBackupFile = async(changelogJson, bak_changelogJson) => {
   try{
     // Create changelog.json
@@ -240,5 +259,6 @@ module.exports = {
   addChangedItem,
   changelogTemplate,
   generateChangelogFile,
+  generatePackageJsonFile,
   createChangeLogJsonFromBackupFile
 }
