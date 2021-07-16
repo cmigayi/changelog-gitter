@@ -39,15 +39,15 @@ var bak_changelogJson = path.resolve('./.bak_changelog.json');
 if(!git.isGitInit()){
   console.log("Attention: Initialized Git before you proceed!");
 }else{
+  if(args[1] === "gstart"){
+    // Create package.json file that's needed to execute node project commands
+    utils.generatePackageJsonFile();
+  }
   /* User inputs: Following the format in the above comment section */
   if(!args[2]){
     console.log("Attention: You need to provide the arguments");
   }else{
     switch(args[2]){
-      case "start":
-        // Create package.json file that's needed to execute node project commands
-        utils.generatePackageJsonFile();
-      break;
       case "log":
         // Check if changelog.json file exists in the node_modules/changelog-gitter dir
         if(fs.existsSync(changelogJson)){
