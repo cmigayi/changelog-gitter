@@ -234,6 +234,8 @@ generatePackageJsonFile = async() => {
     "dependencies": {}
   };
   if(!fs.existsSync('./package.json')){
+    console.log("Enter password for this process...");
+    await exec("sudo touch package.json");
     fs.writeFileSync('./package.json', packagetemplate, { flag: 'wx' });
     console.log("package.json created successful");
     gitChange("package.json file created");

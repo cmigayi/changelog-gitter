@@ -39,7 +39,7 @@ var bak_changelogJson = path.resolve('./.bak_changelog.json');
 if(!git.isGitInit()){
   console.log("Attention: Initialized Git before you proceed!");
 }else{
-  if(args[1] === "gstart"){
+  if(args[2] === "gstart"){
     // Create package.json file that's needed to execute node project commands
     utils.generatePackageJsonFile();
   }
