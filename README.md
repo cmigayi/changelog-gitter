@@ -4,8 +4,17 @@ Automated changelog generator for all projects including git add and commit. __C
 ## Good to know
   __changelog-gitter__ takes care of your "git add ." and "git commit". You can confirm this by checking your git logs. 
 
+## Pre-requisites
+* NPM - Make sure you have NPM installed
+* Git - Make sure you have Git installed 
+
 ## Installation
-> sudo npm i changelog-gitter --save
+> npm init
+ 
+__(Press Enter until all the defaults are accepted. The package.json file should be generate as a result).__
+
+__Then, install changelog-gitter__
+> npm i changelog-gitter --save
 
 ## Usage
 1. Create a *change.js* file in your project root 
@@ -20,6 +29,14 @@ Automated changelog generator for all projects including git add and commit. __C
 
 > git init
 
+## To test if the installation was successful, do this:
+> node change log
+ 
+__If the result is as follows then it was successful:__
+
+![changelog-gitter successful installation image](changeloggittersuccessfulInstallation.PNG)
+
+## The commands you will need:
 4. You should know the following arguments: 
 
   * node change [log]
