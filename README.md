@@ -34,7 +34,10 @@ __Then, install changelog-gitter__
  
 __If the result is as follows then it was successful:__
 
-[![changelog-gitter successful installation image](changeloggittersuccessfulInstallation.PNG)] (https://github.com/cmigayi/changelog-gitter/blob/master/changeloggittersuccessfulInstallation.PNG)
+![changelog-gitter successful installation image](changeloggittersuccessfulInstallation.PNG)
+
+__If the above image didn't show, click the one below__
+(https://github.com/cmigayi/changelog-gitter/blob/master/changeloggittersuccessfulInstallation.PNG)
 
 ## The commands you will need:
 4. You should know the following arguments: 
