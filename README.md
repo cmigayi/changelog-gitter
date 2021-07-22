@@ -19,7 +19,10 @@ __Then, install changelog-gitter__
 ## Usage
 1. Create a *change.js* file in your project root 
 
-> sudo touch change.js
+> touch change.js
+
+__For windows: Create the file manual or use the following COMMAND:__
+> echo > change.js
 
 2. Paste the following onto *change.js* file
 
@@ -46,7 +49,7 @@ __If the above image didn't show, click the one below__
   
     Use this after posting atleast one change. It will generate the __CHANGELOG.md__ file in your project 
     
-    > sudo node change log
+    > node change log
   
   * node change [VERSION_TYPE] [CHANGE_TYPE] ["COMMENT"]
   
@@ -59,11 +62,11 @@ __If the above image didn't show, click the one below__
       * Major: Applicable when making major changes in the project. It will increment version at z (version: z.0.0)
       
       Syntax
-      > sudo node change patch added "My first project patch change"
+      > node change patch added "My first project patch change"
       
-      > sudo node change minor added "My first project minor change"
+      > node change minor added "My first project minor change"
       
-      > sudo node change major added "My first project major change"
+      > node change major added "My first project major change"
       
     
     ii. [CHANGE_TYPE]
@@ -71,27 +74,27 @@ __If the above image didn't show, click the one below__
            
       * Added: Comment on any added feature
       
-      > sudo node change patch __added__ "new feature added" 
+      > node change patch __added__ "new feature added" 
       
       * Changed: Comment on any change made in the project code
       
-      > sudo node change patch __changed__ "Feature x changed to y"
+      > node change patch __changed__ "Feature x changed to y"
       
       * Depracted: Comment on any deprecated feature
       
-      > sudo node change patch __deprecated__ "Feature x is no longer in use for v2.2.0"
+      > node change patch __deprecated__ "Feature x is no longer in use for v2.2.0"
       
       * Removed: Comment on any removed feature
       
-      > sudo node change patch __removed__ "x and y has been removed"
+      > node change patch __removed__ "x and y has been removed"
       
       * Fixed: Comment on any fixed feature
       
-      > sudo node change patch __fixed__ "The lag on login has been fixed"
+      > node change patch __fixed__ "The lag on login has been fixed"
       
       * Security: Comment on any security feature created, updated or added
       
-      > sudo node change patch __security__ "X was added in the db transactions to secure the data"
+      > node change patch __security__ "X was added in the db transactions to secure the data"
     
     iii. ["COMMENT"]
     
@@ -103,6 +106,6 @@ __If the above image didn't show, click the one below__
     
    Syntax:
     
-   > sudo node change patch __alike__ added "new change has been made" 
+   > node change patch __alike__ added "new change has been made" 
       
    
