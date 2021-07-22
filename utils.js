@@ -222,7 +222,7 @@ generateChangelogFile = async(jsonfile) => {
 }
 
 generateDotGitIgnoreFile = async() => {
-  let dotGitIgnoreTemplate = "node_modules \n package* \n .back_changelog.json \n change.js \n";
+  let dotGitIgnoreTemplate = "node_modules\npackage*\n.back_changelog.json\nchange.js\n";
   if(fs.existsSync('./.gitignore')){
     fs.writeFileSync('./.gitignore', dotGitIgnoreTemplate);
     console.log(".gitignore update successful");
