@@ -34,9 +34,6 @@ var bak_changelogJson = path.resolve('./.bak_changelog.json');
 **/
 
 
-// Create package.json file that's needed to execute node project commands
-utils.generatePackageJsonFile();
-
 /**
 * Check if git has been initialized
 */

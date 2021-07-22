@@ -221,26 +221,26 @@ generateChangelogFile = async(jsonfile) => {
   gitChange("CHANGELOG.md file updated");
 }
 
-generatePackageJsonFile = async() => {
-  let packagetemplate = {
-    "name": "",
-    "version": "",
-    "description": "",
-    "main": "change.js",
-    "scripts": {},
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {}
-  };
-  if(!fs.existsSync('./package.json')){
-    console.log("Enter password for this process...");
-    await exec("sudo touch package.json");
-    fs.writeFileSync('./package.json', packagetemplate, { flag: 'wx' });
-    console.log("package.json created successful");
-    gitChange("package.json file created");
-  }
-}
+// generatePackageJsonFile = async() => {
+//   let packagetemplate = {
+//     "name": "",
+//     "version": "",
+//     "description": "",
+//     "main": "change.js",
+//     "scripts": {},
+//     "keywords": [],
+//     "author": "",
+//     "license": "ISC",
+//     "dependencies": {}
+//   };
+//   if(!fs.existsSync('./package.json')){
+//     console.log("Enter password for this process...");
+//     await exec("sudo touch package.json");
+//     fs.writeFileSync('./package.json', packagetemplate, { flag: 'wx' });
+//     console.log("package.json created successful");
+//     gitChange("package.json file created");
+//   }
+// }
 
 createChangeLogJsonFromBackupFile = async(changelogJson, bak_changelogJson) => {
   try{
@@ -261,6 +261,5 @@ module.exports = {
   addChangedItem,
   changelogTemplate,
   generateChangelogFile,
-  generatePackageJsonFile,
   createChangeLogJsonFromBackupFile
 }
