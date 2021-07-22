@@ -33,13 +33,17 @@ var bak_changelogJson = path.resolve('./.bak_changelog.json');
 * ======================> node change patch added "COMMENT" <===================
 **/
 
-
 /**
 * Check if git has been initialized
 */
 if(!git.isGitInit()){
   console.log("Attention: Initialized Git before you proceed!");
 }else{
+  /**
+  * Create .gitignore file
+  */
+  utils.generateDotGitIgnoreFile();
+
   /* User inputs: Following the format in the above comment section */
   if(!args[2]){
     console.log("Attention: You need to provide the arguments");

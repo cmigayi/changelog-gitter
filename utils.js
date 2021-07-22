@@ -221,26 +221,17 @@ generateChangelogFile = async(jsonfile) => {
   gitChange("CHANGELOG.md file updated");
 }
 
-// generatePackageJsonFile = async() => {
-//   let packagetemplate = {
-//     "name": "",
-//     "version": "",
-//     "description": "",
-//     "main": "change.js",
-//     "scripts": {},
-//     "keywords": [],
-//     "author": "",
-//     "license": "ISC",
-//     "dependencies": {}
-//   };
-//   if(!fs.existsSync('./package.json')){
-//     console.log("Enter password for this process...");
-//     await exec("sudo touch package.json");
-//     fs.writeFileSync('./package.json', packagetemplate, { flag: 'wx' });
-//     console.log("package.json created successful");
-//     gitChange("package.json file created");
-//   }
-// }
+generateDotGitIgnoreFile = async() => {
+  let dotGitIgnoreTemplate = "node_modules \n package* \n .back_changelog.json \n change.js \n";
+  if(fs.existsSync('./.gitignore')){
+    fs.writeFileSync('./.gitignore', dotGitIgnoreTemplate);
+    console.log(".gitignore update successful");
+  }else{
+    fs.writeFileSync('./.gitignore', dotGitIgnoreTemplate, { flag: 'wx' });
+    console.log(".gitignore created successful");
+  }
+  gitChange(".gitignore file updated");     
+}
 
 createChangeLogJsonFromBackupFile = async(changelogJson, bak_changelogJson) => {
   try{
@@ -261,5 +252,6 @@ module.exports = {
   addChangedItem,
   changelogTemplate,
   generateChangelogFile,
+  generateDotGitIgnoreFile,
   createChangeLogJsonFromBackupFile
 }
