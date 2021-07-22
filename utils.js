@@ -76,7 +76,7 @@ createAndWriteChangeLogJson = async(versiontype, typeValue, comment, alike, chan
     }
   }else{
     try{
-      versionValue = "0.0.0";
+      versionValue = "0.1.0";
       //console.log("updated version", versionValue);
 
       // If version doesn't exist, add it
